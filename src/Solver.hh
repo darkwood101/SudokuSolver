@@ -20,11 +20,12 @@ private:
         c_box
     };
 
-    int get_constraint_col(constraint c, int row, int col, int digit = 0);
+    int constraint_to_col(constraint c, int row, int col, int digit = 0);
+    constraint col_to_constraint(int col);
     void init_columns();
     void insert_row(int row, int col, int digit);
-    bool search(int depth);
-    void decode(std::vector<std::vector<int>> sol);
+    bool search(int depth, std::vector<std::vector<int>>& sol);
+    void decode(std::vector<std::vector<int>>& sol);
 
 
 
@@ -33,10 +34,10 @@ public:
     static constexpr size_t board_size_sqr = 81;
     static constexpr size_t num_cols = 4 * board_size * board_size + 1;
 
-    Solver(std::vector<std::vector<int>> grid);
+    Solver(std::vector<std::vector<int>>& grid);
     ~Solver();
     Column* choose_next_column();
-    void run(std::vector<std::vector<int>> sol);
+    void run(std::vector<std::vector<int>>& sol);
 
 
 };

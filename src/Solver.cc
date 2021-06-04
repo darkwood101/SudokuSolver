@@ -2,7 +2,7 @@
 #include <cassert>
 #include <limits>
 
-int Solver::get_constraint_col(constraint c, int row, int col, int digit) {
+int Solver::constraint_to_col(constraint c, int row, int col, int digit) {
     int ret = -1;
     switch (c) {
         case c_cell:
@@ -32,7 +32,22 @@ int Solver::get_constraint_col(constraint c, int row, int col, int digit) {
             break;
     }
 
+    cols_[ret].row() = row;
+    cols_[ret].column() = col;
+    cols_[ret].digit() = digit;
     return ret;
+}
+
+Solver::constraint Solver::col_to_constraint(int col) {
+    if (col <= board_size_sqr) {
+        return c_cell;
+    } else if (col <= 2 * board_size_sqr) {
+        return c_row;
+    } else if (col <= 3 * board_size_sqr) {
+        return c_column;
+    } else {
+        return c_box;
+    }
 }
 
 void Solver::init_columns() {
@@ -47,10 +62,10 @@ void Solver::init_columns() {
 }
 
 void Solver::insert_row(int row, int col, int digit) {
-    int col_indices[4] = {get_constraint_col(c_cell, row, col),
-                          get_constraint_col(c_row, row, col, digit),
-                          get_constraint_col(c_column, row, col, digit),
-                          get_constraint_col(c_box, row, col, digit)};
+    int col_indices[4] = {constraint_to_col(c_cell, row, col),
+                          constraint_to_col(c_row, row, col, digit),
+                          constraint_to_col(c_column, row, col, digit),
+                          constraint_to_col(c_box, row, col, digit)};
     Cell* cells = new Cell[4];
     for (int i = 0; i < 4; ++i) {
         Column* column = &cols_[col_indices[i]];
@@ -68,8 +83,9 @@ void Solver::insert_row(int row, int col, int digit) {
     }
 }
 
-bool Solver::search(int depth) {
+bool Solver::search(int depth, std::vector<std::vector<int>>& sol) {
     if (root_->right() == root_) {
+        decode(sol);
         return true;
     }
 
@@ -77,10 +93,11 @@ bool Solver::search(int depth) {
     col->cover();
     for (Cell* cell = col->down(); cell != col; cell = cell->down()) {
         sols_.push_back(cell);
+
         for (Cell* row = cell->right(); row != cell; row = row->right()) {
             row->column()->cover();
         }
-        search(++depth);
+        search(++depth, sol);
         Cell* fail_cell = sols_.back();
         sols_.pop_back();
         for (Cell* fail_row = fail_cell->left(); fail_row != fail_cell; fail_row = fail_row->left()) {
@@ -92,7 +109,28 @@ bool Solver::search(int depth) {
     return false;
 }
 
-Solver::Solver(std::vector<std::vector<int>> grid) {
+void Solver::decode(std::vector<std::vector<int>>& sol) {
+    for (size_t i = 0; i < sols_.size(); ++i) {
+        int row = -1;
+        int col = -1;
+        int digit = -1;
+        Cell* cell = sols_[i];
+        row = cell->column()->row();
+        col = cell->column()->column();
+        for (int j = 0; j < 4; ++j) {
+            if (cell->column()->digit() != 0) {
+                digit = cell->column()->digit();
+                break;
+            }
+        }
+        assert(row >= 0 && row < 9);
+        assert(col >= 0 && col < 9);
+        assert(digit > 0 && digit <= 9);
+        sol[row][col] = digit;
+    }
+}
+
+Solver::Solver(std::vector<std::vector<int>>& grid) {
     init_columns();
 
     for (size_t row = 0; row < board_size; ++row) {
@@ -126,8 +164,8 @@ Column* Solver::choose_next_column() {
     return ret;
 }
 
-void Solver::run(std::vector<std::vector<int>> sol) {
-    if (search(0)) {
+void Solver::run(std::vector<std::vector<int>>& sol) {
+    if (search(0, sol)) {
         // solution
     } else {
         // no solution

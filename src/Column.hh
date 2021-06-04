@@ -9,6 +9,9 @@ class Column : public Cell {
 private:
     size_t size_;
     int index_;
+    int row_;
+    int column_;
+    int digit_;
 
 public:
     Column();
@@ -18,6 +21,9 @@ public:
 
     inline size_t& size();
     inline int& index();
+    inline int& row();
+    inline int& column();
+    inline int& digit();
 
 };
 
@@ -27,6 +33,18 @@ inline size_t& Column::size() {
 
 inline int& Column::index() {
     return index_;
+}
+
+inline int& Column::row() {
+    return row_;
+}
+
+inline int& Column::column() {
+    return column_;
+}
+
+inline int& Column::digit() {
+    return digit_;
 }
 
 #endif
