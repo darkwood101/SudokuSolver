@@ -24,6 +24,7 @@ private:
     void init_columns();
     void insert_row(int row, int col, int digit);
     bool search(int depth);
+    void decode(std::vector<std::vector<int>> sol);
 
 
 

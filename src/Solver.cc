@@ -41,7 +41,8 @@ void Solver::init_columns() {
 
     for (size_t i = 0; i < num_cols; ++i) {
         cols_[i].right() = &cols_[(i + 1) % num_cols];
-        cols_[i].left() = (i == 0) ? &cols_[num_cols - 1] : &cols_[i - 1]; 
+        cols_[i].left() = (i == 0) ? &cols_[num_cols - 1] : &cols_[i - 1];
+        cols_[i].index() = i;
     }
 }
 
@@ -63,6 +64,7 @@ void Solver::insert_row(int row, int col, int digit) {
         cell->right() = &cells[(i + 1) % 4];
 
         cell->column() = column;
+        ++column->size();
     }
 }
 

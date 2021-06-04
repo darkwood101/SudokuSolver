@@ -8,6 +8,7 @@ class Column : public Cell {
 
 private:
     size_t size_;
+    int index_;
 
 public:
     Column();
@@ -15,12 +16,17 @@ public:
     void cover();
     void uncover();
 
-    inline size_t size() const;
+    inline size_t& size();
+    inline int& index();
 
 };
 
-inline size_t Column::size() const {
+inline size_t& Column::size() {
     return size_;
+}
+
+inline int& Column::index() {
+    return index_;
 }
 
 #endif
