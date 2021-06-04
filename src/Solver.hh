@@ -33,6 +33,7 @@ public:
 
     Solver(std::vector<std::vector<int>> grid);
     Column* choose_next_column();
+    void run(std::vector<std::vector<int>> sol);
 
 
 };

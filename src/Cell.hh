@@ -19,7 +19,7 @@ public:
     inline Cell*& down();
     inline Cell*& right();
     inline Cell*& left();
-    inline Column* column() const;
+    inline Column*& column();
 };
 
 
@@ -39,7 +39,7 @@ inline Cell*& Cell::left() {
     return left_;
 }
 
-inline Column* Cell::column() const {
+inline Column*& Cell::column() {
     return column_;
 }
 

@@ -61,6 +61,8 @@ void Solver::insert_row(int row, int col, int digit) {
 
         cell->left() = (i == 0) ? &cells[3] : &cells[i - 1];
         cell->right() = &cells[(i + 1) % 4];
+
+        cell->column() = column;
     }
 }
 
@@ -96,4 +98,8 @@ Column* Solver::choose_next_column() {
     }
 
     return ret;
+}
+
+void Solver::run(std::vector<std::vector<int> > sol) {
+
 }
