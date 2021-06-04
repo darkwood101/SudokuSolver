@@ -11,6 +11,7 @@ class Solver {
 private:
     Column* root_;
     std::vector<Column> cols_;
+    std::vector<Cell*> sols_;
 
     enum constraint {
         c_cell,
@@ -22,7 +23,7 @@ private:
     int get_constraint_col(constraint c, int row, int col, int digit = 0);
     void init_columns();
     void insert_row(int row, int col, int digit);
-    void insert_row(Column* col);
+    bool search(int depth);
 
 
 
@@ -32,6 +33,7 @@ public:
     static constexpr size_t num_cols = 4 * board_size * board_size + 1;
 
     Solver(std::vector<std::vector<int>> grid);
+    ~Solver();
     Column* choose_next_column();
     void run(std::vector<std::vector<int>> sol);
 

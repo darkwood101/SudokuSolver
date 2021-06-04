@@ -66,6 +66,30 @@ void Solver::insert_row(int row, int col, int digit) {
     }
 }
 
+bool Solver::search(int depth) {
+    if (root_->right() == root_) {
+        return true;
+    }
+
+    Column* col = choose_next_column();
+    col->cover();
+    for (Cell* cell = col->down(); cell != col; cell = cell->down()) {
+        sols_.push_back(cell);
+        for (Cell* row = cell->right(); row != cell; row = row->right()) {
+            row->column()->cover();
+        }
+        search(++depth);
+        Cell* fail_cell = sols_.back();
+        sols_.pop_back();
+        for (Cell* fail_row = fail_cell->left(); fail_row != fail_cell; fail_row = fail_row->left()) {
+            fail_row->column()->uncover();
+        }
+    }
+    col->uncover();
+
+    return false;
+}
+
 Solver::Solver(std::vector<std::vector<int>> grid) {
     init_columns();
 
@@ -100,6 +124,10 @@ Column* Solver::choose_next_column() {
     return ret;
 }
 
-void Solver::run(std::vector<std::vector<int> > sol) {
-
+void Solver::run(std::vector<std::vector<int>> sol) {
+    if (search(0)) {
+        // solution
+    } else {
+        // no solution
+    }
 }
