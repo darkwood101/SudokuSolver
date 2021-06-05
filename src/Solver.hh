@@ -15,6 +15,7 @@ private:
     std::vector<Cell*> sols_;
     std::vector<Cell*> allocs_;
     Sudoku& s_;
+    bool animate_;
 
     enum constraint {
         c_cell,
@@ -37,7 +38,7 @@ public:
     static constexpr int board_size_sqr = 81;
     static constexpr int num_cols = 4 * board_size * board_size + 1;
 
-    Solver(Sudoku& s);
+    Solver(Sudoku& s, bool animate);
     ~Solver();
     Column* choose_next_column();
     void run();

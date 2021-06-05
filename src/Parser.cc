@@ -33,3 +33,9 @@ void Parser::usage(const char* prog_name) {
     s.print();
     fprintf(stderr, "should be input as \n%s\n", example_sudoku);
 }
+
+void Parser::clear() {
+    for (int i = 0; i < 100; ++i) {
+        printf("\n");
+    }
+}

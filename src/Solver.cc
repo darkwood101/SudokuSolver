@@ -1,8 +1,11 @@
 #include "Solver.hh"
+#include "Parser.hh"
 #include <cassert>
 #include <limits>
 #include <cstdio>
 #include <stdexcept>
+#include <thread>
+#include <chrono>
 
 int Solver::constraint_to_col(constraint c, int row, int col, int digit) {
     int ret = -1;
@@ -89,9 +92,18 @@ void Solver::insert_row(int row, int col, int digit) {
 }
 
 void Solver::search(int depth) {
+
     if (root_->right_ == root_) {
         decode();
         return;
+    }
+
+    if (animate_) {
+        decode();
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        Parser::clear();
+        printf("Iteration: %d\n", depth);
+        s_.print();
     }
 
     Column* col = choose_next_column();
@@ -136,7 +148,7 @@ void Solver::decode() {
     }
 }
 
-Solver::Solver(Sudoku& s) : s_(s) {
+Solver::Solver(Sudoku& s, bool animate) : s_(s), animate_(animate) {
     init_columns();
 
     for (size_t row = 0; row < board_size; ++row) {

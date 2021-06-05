@@ -14,6 +14,7 @@ struct Parser {
     inline Parser();
     void parse(int argc, char** argv);
     static void usage(const char* prog_name);
+    static void clear();
     inline void start_timing();
     inline double end_timing();
 };

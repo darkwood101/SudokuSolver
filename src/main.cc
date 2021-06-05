@@ -37,15 +37,22 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    printf("Your input:\n");
-    s.print();
-    Solver sol(s);
+    Sudoku old(s);
+    Solver sol(s, parser.animate_);
     try {
         sol.run();
     } catch (std::runtime_error& err) {
         printf("%s\n", err.what());
         return 0;
     }
+
+    if (parser.animate_) {
+        parser.clear();
+    }
+
+    printf("Your input\n");
+    old.print();
+
     printf("Solution:\n");
     s.print();
 
