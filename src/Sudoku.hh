@@ -8,13 +8,13 @@
 class Sudoku {
 
 private:
+    std::vector<std::vector<char>> grid_;
+
     void print_line();
     void print_row(size_t row);
 
-    static constexpr size_t sudoku_size = 9;
-    std::vector<std::vector<char>> grid_;
-
 public:
+    static constexpr size_t sudoku_size = 9;
 
     Sudoku(std::vector<std::vector<char>>& grid);
     Sudoku();

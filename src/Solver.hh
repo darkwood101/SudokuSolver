@@ -27,13 +27,13 @@ private:
     constraint col_to_constraint(int col);
     void init_columns();
     void insert_row(int row, int col, int digit);
-    bool search(int depth);
+    void search(int depth);
     void decode();
 
 
 
 public:
-    static constexpr int board_size = 9;
+    static constexpr int board_size = Sudoku::sudoku_size;
     static constexpr int board_size_sqr = 81;
     static constexpr int num_cols = 4 * board_size * board_size + 1;
 
@@ -47,6 +47,5 @@ public:
 
 static_assert(Solver::board_size == 9, "Only 9x9 Sudokus are supported!");
 static_assert(Solver::num_cols == 325, "Number of columns is miscalculated!");
-static_assert(Solver::board_size_sqr == Solver::board_size * Solver::board_size, "81 != 9^2");
 
 #endif

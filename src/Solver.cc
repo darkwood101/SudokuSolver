@@ -88,10 +88,10 @@ void Solver::insert_row(int row, int col, int digit) {
     }
 }
 
-bool Solver::search(int depth) {
+void Solver::search(int depth) {
     if (root_->right_ == root_) {
         decode();
-        return true;
+        return;
     }
 
     Column* col = choose_next_column();
@@ -110,8 +110,6 @@ bool Solver::search(int depth) {
         }
     }
     col->uncover();
-
-    return false;
 }
 
 void Solver::decode() {
@@ -134,8 +132,6 @@ void Solver::decode() {
         }
         assert(row >= 0 && row < 9);
         assert(col >= 0 && col < 9);
-        //assert(digit > 0 && digit <= 9);
-        //assert(sol[row][col] == -2);
         s_.get(row, col) = digit + '0';
     }
 }
@@ -182,7 +178,8 @@ Column* Solver::choose_next_column() {
 }
 
 void Solver::run() {
-    if (!search(0)) {
+    search(0);
+    /*if (!exists_) {
         throw std::runtime_error("This sudoku has no solution");
-    }
+    }*/
 }

@@ -1,36 +1,58 @@
 #include "Solver.hh"
 #include <cstdio>
 #include <cstdlib>
-#include <cassert>
 #include "Sudoku.hh"
 #include <stdexcept>
 #include <iostream>
+#include "Parser.hh"
 
-int main() {
+Parser parser;
 
-	std::string	input;
-	std::getline(std::cin, input);
-	
-	Sudoku s;
-	try {
-		s.init(input);
-	} catch (std::invalid_argument& err) {
-		printf("Error: %s\n", err.what());
-		return 0;
-	}
+int main(int argc, char** argv) {
 
-	printf("Your input:\n");
-	s.print();
-	Solver sol(s);
-	try {
-		sol.run();
-	} catch (std::runtime_error& err) {
-		printf("Error: %s\n", err.what());
-		return 0;
-	}
-	printf("Solution:\n");
-	s.print();
+    try {
+        parser.parse(argc, argv);
+    } catch (std::invalid_argument& err) {
+        fprintf(stderr, "Unrecognized command %s\n\n", err.what());
+        parser.usage(argv[0]);
+        return 0;
+    }
 
-	return 0;
+    if (parser.help_) {
+        return 0;
+    }
+
+    std::string input;
+    std::getline(std::cin, input);
+
+    if (parser.time_) {
+        parser.start_timing();
+    }
+    
+    Sudoku s;
+    try {
+        s.init(input);
+    } catch (std::invalid_argument& err) {
+        printf("Error: %s\n", err.what());
+        return 0;
+    }
+
+    printf("Your input:\n");
+    s.print();
+    Solver sol(s);
+    try {
+        sol.run();
+    } catch (std::runtime_error& err) {
+        printf("%s\n", err.what());
+        return 0;
+    }
+    printf("Solution:\n");
+    s.print();
+
+    if (parser.time_) {
+        printf("Time taken: %.2f milliseconds\n", parser.end_timing() / 1000.00);
+    }
+
+    return 0;
 
 }

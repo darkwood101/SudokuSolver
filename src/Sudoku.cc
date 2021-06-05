@@ -34,6 +34,7 @@ Sudoku::Sudoku() {
 
 void Sudoku::init(std::string s) {
     if (s.length() != sudoku_size * sudoku_size) {
+        fprintf(stderr, "Invalid string length %lu, it needs to be %lu\n", s.length(), sudoku_size * sudoku_size); 
         throw std::invalid_argument("Invalid string length");
     }
     for (size_t i = 0; i < sudoku_size; ++i) {

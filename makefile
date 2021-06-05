@@ -4,7 +4,7 @@ TARGET=sudokusolver
 
 SRC_DIR=src
 SRC=$(wildcard $(SRC_DIR)/*.cc)
-CFLAGS= -fsanitize=address -O2 -Wextra -Wall -Wshadow
+CFLAGS= -O2 -Wextra -Wall -Wshadow
 
 OBJ_DIR=obj
 OBJ=$(SRC:$(SRC_DIR)/%.cc=$(OBJ_DIR)/%.o)
@@ -17,7 +17,7 @@ all: $(TARGET)
 
 $(TARGET): $(OBJ)
 	@echo LINKING: $(TARGET)
-	@$(CC) -o $@ $^ -fsanitize=address
+	@$(CC) -o $@ $^
 	@echo
 	@echo Build successful!
 
