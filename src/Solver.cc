@@ -1,6 +1,7 @@
 #include "Solver.hh"
 #include <cassert>
 #include <limits>
+#include <cstdio>
 
 int Solver::constraint_to_col(constraint c, int row, int col, int digit) {
     int ret = -1;
@@ -15,26 +16,27 @@ int Solver::constraint_to_col(constraint c, int row, int col, int digit) {
             assert(digit > 0 && digit <= 9);
             ret = board_size_sqr + row * board_size + digit;
             assert(ret >= 82 && ret <= 162);
+            cols_[ret].row() = row;
+            cols_[ret].digit() = digit;
             break;
 
         case c_column:
             assert(digit > 0 && digit <= 9);
             ret = 2 * board_size_sqr + col * board_size + digit;
             assert(ret >= 163 && 243);
+            cols_[ret].column() = col;
+            cols_[ret].digit() = digit;
             break;
 
         case c_box:
             assert(digit > 0 && digit <= 9);
-            int box = 3 * row + col % 3;
+            int box = 3 * (row / 3) + (col / 3) % 3;
             assert(box >= 0 && box <= 8);
             ret = 3 * board_size_sqr + box * board_size + digit;
             assert(ret >= 244 && ret <= 324);
             break;
     }
 
-    cols_[ret].row() = row;
-    cols_[ret].column() = col;
-    cols_[ret].digit() = digit;
     return ret;
 }
 
@@ -57,6 +59,8 @@ void Solver::init_columns() {
     for (size_t i = 0; i < num_cols; ++i) {
         cols_[i].right() = &cols_[(i + 1) % num_cols];
         cols_[i].left() = (i == 0) ? &cols_[num_cols - 1] : &cols_[i - 1];
+        cols_[i].up() = &cols_[i];
+        cols_[i].down() = &cols_[i];
         cols_[i].index() = i;
     }
 }
@@ -115,17 +119,22 @@ void Solver::decode(std::vector<std::vector<int>>& sol) {
         int col = -1;
         int digit = -1;
         Cell* cell = sols_[i];
-        row = cell->column()->row();
-        col = cell->column()->column();
         for (int j = 0; j < 4; ++j) {
-            if (cell->column()->digit() != 0) {
+            if (cell->column()->digit() != -1) {
                 digit = cell->column()->digit();
-                break;
             }
+            if (cell->column()->row() != -1) {
+                row = cell->column()->row();
+            }
+            if (cell->column()->column() != -1) {
+                col = cell->column()->column();
+            }
+            cell = cell->right();
         }
         assert(row >= 0 && row < 9);
         assert(col >= 0 && col < 9);
-        assert(digit > 0 && digit <= 9);
+        //assert(digit > 0 && digit <= 9);
+        //assert(sol[row][col] == -2);
         sol[row][col] = digit;
     }
 }
@@ -146,6 +155,10 @@ Solver::Solver(std::vector<std::vector<int>>& grid) {
     }
 }
 
+Solver::~Solver() {
+
+}
+
 Column* Solver::choose_next_column() {
     assert(root_ != nullptr);
 
@@ -161,6 +174,7 @@ Column* Solver::choose_next_column() {
         }
     }
 
+    assert(ret != root_);
     return ret;
 }
 
@@ -168,6 +182,6 @@ void Solver::run(std::vector<std::vector<int>>& sol) {
     if (search(0, sol)) {
         // solution
     } else {
-        // no solution
+        //assert(false);
     }
 }

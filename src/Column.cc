@@ -11,7 +11,7 @@ void Column::cover() {
     left()->right() = right();
 
     for (Cell* row = down(); row != this; row = row->down()) {
-        for (Cell* cell = row->right(); cell != row; cell = row->right()) {
+        for (Cell* cell = row->right(); cell != row; cell = cell->right()) {
             cell->up()->down() = cell->down();
             cell->down()->up() = cell->up();
             --cell->column()->size_;
