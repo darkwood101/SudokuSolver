@@ -2,8 +2,20 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cassert>
+#include "Sudoku.hh"
+#include <stdexcept>
 
 int main() {
+	
+	try {
+		Sudoku s;
+		s.print();
+		return 0;
+	} catch (std::invalid_argument& err) {
+		printf("Error: %s\n", err.what());
+		return 0;
+	}
+
 	std::vector<std::vector<int>> grid;
 	grid.resize(9);
 	for (int i = 0; i < 9; ++i) {
