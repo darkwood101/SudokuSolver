@@ -61,7 +61,6 @@ void Solver::init_columns() {
         cols_[i].left() = (i == 0) ? &cols_[num_cols - 1] : &cols_[i - 1];
         cols_[i].up() = &cols_[i];
         cols_[i].down() = &cols_[i];
-        cols_[i].index() = i;
     }
 }
 

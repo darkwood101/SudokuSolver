@@ -30,9 +30,9 @@ private:
 
 
 public:
-    static constexpr size_t board_size = 9;
-    static constexpr size_t board_size_sqr = 81;
-    static constexpr size_t num_cols = 4 * board_size * board_size + 1;
+    static constexpr int board_size = 9;
+    static constexpr int board_size_sqr = 81;
+    static constexpr int num_cols = 4 * board_size * board_size + 1;
 
     Solver(std::vector<std::vector<int>>& grid);
     ~Solver();

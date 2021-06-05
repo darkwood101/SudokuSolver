@@ -1,7 +1,6 @@
 #include "Column.hh"
 
 Column::Column() : size_(0),
-                   index_(0),
                    row_(-1),
                    column_(-1),
                    digit_(-1) {}
