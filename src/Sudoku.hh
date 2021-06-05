@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <cstdlib>
+#include <string>
 
 class Sudoku {
 
@@ -17,12 +18,13 @@ public:
 
     Sudoku(std::vector<std::vector<char>>& grid);
     Sudoku();
-    inline char get(size_t row, size_t column);
+    void init(std::string s);
+    inline char& get(size_t row, size_t column);
     void print();
 
 };
 
-inline char Sudoku::get(size_t row, size_t column) {
+inline char& Sudoku::get(size_t row, size_t column) {
     return grid_[row][column];
 }
 

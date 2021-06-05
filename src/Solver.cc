@@ -2,6 +2,7 @@
 #include <cassert>
 #include <limits>
 #include <cstdio>
+#include <stdexcept>
 
 int Solver::constraint_to_col(constraint c, int row, int col, int digit) {
     int ret = -1;
@@ -87,9 +88,9 @@ void Solver::insert_row(int row, int col, int digit) {
     }
 }
 
-bool Solver::search(int depth, std::vector<std::vector<int>>& sol) {
+bool Solver::search(int depth) {
     if (root_->right_ == root_) {
-        decode(sol);
+        decode();
         return true;
     }
 
@@ -101,7 +102,7 @@ bool Solver::search(int depth, std::vector<std::vector<int>>& sol) {
         for (Cell* row = cell->right_; row != cell; row = row->right_) {
             row->column_->cover();
         }
-        search(++depth, sol);
+        search(++depth);
         Cell* fail_cell = sols_.back();
         sols_.pop_back();
         for (Cell* fail_row = fail_cell->left_; fail_row != fail_cell; fail_row = fail_row->left_) {
@@ -113,7 +114,7 @@ bool Solver::search(int depth, std::vector<std::vector<int>>& sol) {
     return false;
 }
 
-void Solver::decode(std::vector<std::vector<int>>& sol) {
+void Solver::decode() {
     for (size_t i = 0; i < sols_.size(); ++i) {
         int row = -1;
         int col = -1;
@@ -135,17 +136,17 @@ void Solver::decode(std::vector<std::vector<int>>& sol) {
         assert(col >= 0 && col < 9);
         //assert(digit > 0 && digit <= 9);
         //assert(sol[row][col] == -2);
-        sol[row][col] = digit;
+        s_.get(row, col) = digit + '0';
     }
 }
 
-Solver::Solver(std::vector<std::vector<int>>& grid) {
+Solver::Solver(Sudoku& s) : s_(s) {
     init_columns();
 
     for (size_t row = 0; row < board_size; ++row) {
         for (size_t column = 0; column < board_size; ++column) {
-            if (grid[row][column] != 0) {
-                insert_row(row, column, grid[row][column]);
+            if (s.get(row, column) != '.') {
+                insert_row(row, column, s.get(row, column) - '0');
             } else {
                 for (int digit = 1; digit <= 9; ++digit) {
                     insert_row(row, column, digit);
@@ -180,10 +181,8 @@ Column* Solver::choose_next_column() {
     return ret;
 }
 
-void Solver::run(std::vector<std::vector<int>>& sol) {
-    if (search(0, sol)) {
-        // solution
-    } else {
-        //assert(false);
+void Solver::run() {
+    if (!search(0)) {
+        throw std::runtime_error("This sudoku has no solution");
     }
 }

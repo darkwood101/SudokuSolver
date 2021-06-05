@@ -5,6 +5,7 @@
 #include <vector>
 #include "Column.hh"
 #include "Cell.hh"
+#include "Sudoku.hh"
 
 class Solver {
 
@@ -13,6 +14,7 @@ private:
     std::vector<Column> cols_;
     std::vector<Cell*> sols_;
     std::vector<Cell*> allocs_;
+    Sudoku& s_;
 
     enum constraint {
         c_cell,
@@ -25,8 +27,8 @@ private:
     constraint col_to_constraint(int col);
     void init_columns();
     void insert_row(int row, int col, int digit);
-    bool search(int depth, std::vector<std::vector<int>>& sol);
-    void decode(std::vector<std::vector<int>>& sol);
+    bool search(int depth);
+    void decode();
 
 
 
@@ -35,10 +37,10 @@ public:
     static constexpr int board_size_sqr = 81;
     static constexpr int num_cols = 4 * board_size * board_size + 1;
 
-    Solver(std::vector<std::vector<int>>& grid);
+    Solver(Sudoku& s);
     ~Solver();
     Column* choose_next_column();
-    void run(std::vector<std::vector<int>>& sol);
+    void run();
 
 
 };

@@ -32,6 +32,21 @@ Sudoku::Sudoku() {
     }
 }
 
+void Sudoku::init(std::string s) {
+    if (s.length() != sudoku_size * sudoku_size) {
+        throw std::invalid_argument("Invalid string length");
+    }
+    for (size_t i = 0; i < sudoku_size; ++i) {
+        for (size_t j = 0; j < sudoku_size; ++j) {
+            if ((s.at(i * sudoku_size + j) - '0' < 1 || s.at(i * sudoku_size + j) - '0' > 9) && (s.at(i * sudoku_size + j) != '.')) {
+                fprintf(stderr, "Illegal character %c at row %lu, column %lu\n", s.at(i * sudoku_size + j), i, j);
+                throw std::invalid_argument("Illegal character");
+            }
+            grid_[i][j] = s.at(i * sudoku_size + j);
+        }
+    }
+}
+
 void Sudoku::print_line() {
     printf("+-------+-------+-------+\n");
 }
