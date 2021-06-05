@@ -3,45 +3,21 @@
 
 class Column;
 
-class Cell {
-
-private:
+struct Cell {
     Cell* up_;
     Cell* down_;
     Cell* right_;
     Cell* left_;
     Column* column_;
 
-public:
-    Cell();
-
-    inline Cell*& up();
-    inline Cell*& down();
-    inline Cell*& right();
-    inline Cell*& left();
-    inline Column*& column();
+    inline Cell();
 };
 
-
-inline Cell*& Cell::up() {
-    return up_;
+inline Cell::Cell() : up_(nullptr),
+                      down_(nullptr),
+                      right_(nullptr),
+                      left_(nullptr),
+                      column_(nullptr) {
 }
-
-inline Cell*& Cell::down() {
-    return down_;
-}
-
-inline Cell*& Cell::right() {
-    return right_;
-}
-
-inline Cell*& Cell::left() {
-    return left_;
-}
-
-inline Column*& Cell::column() {
-    return column_;
-}
-
 
 #endif

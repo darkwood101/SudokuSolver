@@ -16,16 +16,16 @@ int Solver::constraint_to_col(constraint c, int row, int col, int digit) {
             assert(digit > 0 && digit <= 9);
             ret = board_size_sqr + row * board_size + digit;
             assert(ret >= 82 && ret <= 162);
-            cols_[ret].row() = row;
-            cols_[ret].digit() = digit;
+            cols_[ret].row_ = row;
+            cols_[ret].digit_ = digit;
             break;
 
         case c_column:
             assert(digit > 0 && digit <= 9);
             ret = 2 * board_size_sqr + col * board_size + digit;
             assert(ret >= 163 && 243);
-            cols_[ret].column() = col;
-            cols_[ret].digit() = digit;
+            cols_[ret].column_ = col;
+            cols_[ret].digit_ = digit;
             break;
 
         case c_box:
@@ -57,10 +57,10 @@ void Solver::init_columns() {
     root_ = &cols_[0];
 
     for (size_t i = 0; i < num_cols; ++i) {
-        cols_[i].right() = &cols_[(i + 1) % num_cols];
-        cols_[i].left() = (i == 0) ? &cols_[num_cols - 1] : &cols_[i - 1];
-        cols_[i].up() = &cols_[i];
-        cols_[i].down() = &cols_[i];
+        cols_[i].right_ = &cols_[(i + 1) % num_cols];
+        cols_[i].left_ = (i == 0) ? &cols_[num_cols - 1] : &cols_[i - 1];
+        cols_[i].up_ = &cols_[i];
+        cols_[i].down_ = &cols_[i];
     }
 }
 
@@ -73,38 +73,38 @@ void Solver::insert_row(int row, int col, int digit) {
     for (int i = 0; i < 4; ++i) {
         Column* column = &cols_[col_indices[i]];
         Cell* cell = &cells[i];
-        cell->up() = column->up();
-        cell->down() = column;
-        cell->up()->down() = cell;
-        column->up() = cell;
+        cell->up_ = column->up_;
+        cell->down_ = column;
+        cell->up_->down_ = cell;
+        column->up_ = cell;
 
-        cell->left() = (i == 0) ? &cells[3] : &cells[i - 1];
-        cell->right() = &cells[(i + 1) % 4];
+        cell->left_ = (i == 0) ? &cells[3] : &cells[i - 1];
+        cell->right_ = &cells[(i + 1) % 4];
 
-        cell->column() = column;
-        ++column->size();
+        cell->column_ = column;
+        ++column->size_;
     }
 }
 
 bool Solver::search(int depth, std::vector<std::vector<int>>& sol) {
-    if (root_->right() == root_) {
+    if (root_->right_ == root_) {
         decode(sol);
         return true;
     }
 
     Column* col = choose_next_column();
     col->cover();
-    for (Cell* cell = col->down(); cell != col; cell = cell->down()) {
+    for (Cell* cell = col->down_; cell != col; cell = cell->down_) {
         sols_.push_back(cell);
 
-        for (Cell* row = cell->right(); row != cell; row = row->right()) {
-            row->column()->cover();
+        for (Cell* row = cell->right_; row != cell; row = row->right_) {
+            row->column_->cover();
         }
         search(++depth, sol);
         Cell* fail_cell = sols_.back();
         sols_.pop_back();
-        for (Cell* fail_row = fail_cell->left(); fail_row != fail_cell; fail_row = fail_row->left()) {
-            fail_row->column()->uncover();
+        for (Cell* fail_row = fail_cell->left_; fail_row != fail_cell; fail_row = fail_row->left_) {
+            fail_row->column_->uncover();
         }
     }
     col->uncover();
@@ -119,16 +119,16 @@ void Solver::decode(std::vector<std::vector<int>>& sol) {
         int digit = -1;
         Cell* cell = sols_[i];
         for (int j = 0; j < 4; ++j) {
-            if (cell->column()->digit() != -1) {
-                digit = cell->column()->digit();
+            if (cell->column_->digit_ != -1) {
+                digit = cell->column_->digit_;
             }
-            if (cell->column()->row() != -1) {
-                row = cell->column()->row();
+            if (cell->column_->row_ != -1) {
+                row = cell->column_->row_;
             }
-            if (cell->column()->column() != -1) {
-                col = cell->column()->column();
+            if (cell->column_->column_ != -1) {
+                col = cell->column_->column_;
             }
-            cell = cell->right();
+            cell = cell->right_;
         }
         assert(row >= 0 && row < 9);
         assert(col >= 0 && col < 9);
@@ -164,11 +164,11 @@ Column* Solver::choose_next_column() {
     Column* ret = nullptr;
     size_t sz = std::numeric_limits<size_t>::max();
 
-    for (Column* temp = reinterpret_cast<Column*>(root_->right());
+    for (Column* temp = reinterpret_cast<Column*>(root_->right_);
         temp != root_;
-        temp = reinterpret_cast<Column*>(temp->right())) {
-        if (temp->size() < sz) {
-            sz = temp->size();
+        temp = reinterpret_cast<Column*>(temp->right_)) {
+        if (temp->size_ < sz) {
+            sz = temp->size_;
             ret = temp;
         }
     }

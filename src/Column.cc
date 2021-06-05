@@ -1,32 +1,27 @@
 #include "Column.hh"
 
-Column::Column() : size_(0),
-                   row_(-1),
-                   column_(-1),
-                   digit_(-1) {}
-
 void Column::cover() {
-    right()->left() = left();
-    left()->right() = right();
+    right_->left_ = left_;
+    left_->right_ = right_;
 
-    for (Cell* row = down(); row != this; row = row->down()) {
-        for (Cell* cell = row->right(); cell != row; cell = cell->right()) {
-            cell->up()->down() = cell->down();
-            cell->down()->up() = cell->up();
-            --cell->column()->size_;
+    for (Cell* row = down_; row != this; row = row->down_) {
+        for (Cell* cell = row->right_; cell != row; cell = cell->right_) {
+            cell->up_->down_ = cell->down_;
+            cell->down_->up_ = cell->up_;
+            --cell->column_->size_;
         }
     }
 }
 
 void Column::uncover() {
-    for (Cell* row = up(); row != this; row = row->up()) {
-        for (Cell* cell = row->left(); cell != row; cell = cell->left()) {
-            cell->up()->down() = cell;
-            cell->down()->up() = cell;
-            ++cell->column()->size_;
+    for (Cell* row = up_; row != this; row = row->up_) {
+        for (Cell* cell = row->left_; cell != row; cell = cell->left_) {
+            cell->up_->down_ = cell;
+            cell->down_->up_ = cell;
+            ++cell->column_->size_;
         }
     }
 
-    right()->left() = this;
-    left()->right() = this;
+    right_->left_ = this;
+    left_->right_ = this;
 }
