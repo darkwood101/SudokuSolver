@@ -12,6 +12,7 @@ private:
     Column* root_;
     std::vector<Column> cols_;
     std::vector<Cell*> sols_;
+    std::vector<Cell*> allocs_;
 
     enum constraint {
         c_cell,

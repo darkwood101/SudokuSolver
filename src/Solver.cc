@@ -70,6 +70,7 @@ void Solver::insert_row(int row, int col, int digit) {
                           constraint_to_col(c_column, row, col, digit),
                           constraint_to_col(c_box, row, col, digit)};
     Cell* cells = new Cell[4];
+    allocs_.push_back(cells);
     for (int i = 0; i < 4; ++i) {
         Column* column = &cols_[col_indices[i]];
         Cell* cell = &cells[i];
@@ -155,7 +156,9 @@ Solver::Solver(std::vector<std::vector<int>>& grid) {
 }
 
 Solver::~Solver() {
-
+    for (size_t i = 0; i < allocs_.size(); ++i) {
+        delete[] allocs_[i];
+    }
 }
 
 Column* Solver::choose_next_column() {
