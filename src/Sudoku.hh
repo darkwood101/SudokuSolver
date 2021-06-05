@@ -15,6 +15,8 @@ private:
 
 public:
     static constexpr size_t sudoku_size = 9;
+    bool multiple_;
+    bool solved_;
 
     Sudoku(std::vector<std::vector<char>>& grid);
     Sudoku();

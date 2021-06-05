@@ -94,6 +94,11 @@ void Solver::insert_row(int row, int col, int digit) {
 void Solver::search(int depth) {
 
     if (root_->right_ == root_) {
+        if (s_.solved_) {
+            s_.multiple_ = true;
+        } else {
+            s_.solved_ = true;
+        }
         decode();
         return;
     }
@@ -191,7 +196,4 @@ Column* Solver::choose_next_column() {
 
 void Solver::run() {
     search(0);
-    /*if (!exists_) {
-        throw std::runtime_error("This sudoku has no solution");
-    }*/
 }
