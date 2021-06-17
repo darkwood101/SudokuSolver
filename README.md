@@ -19,9 +19,26 @@ After running `./sudokusolver` from the terminal, the program will wait for inpu
 +-------+-------+-------+
 ~~~
 should be input as 
-`...24..1.7.....8...1..8.3....83.....3..6247.9.......6.....3..428..7.29...6.......`.
+`...24..1.7.....8...1..8.3....83.....3..6247.9.......6.....3..428..7.29...6.......`
 
-The 
+Sudoku Solver will then run Algorithm X, and print out the solution, together with your input, in a nice readable format. Sudoku Solver will let you know if the Sudoku cannot be solved.
+
+Sudoku Solver can also be run with command line options:
+
+| Option          | Description                   |
+| --------------- | ------------------------------|
+| `-h`            | Print the usage message       |
+| `-a`            | Animate the solving algorithm |
+| `-t`            | Measure execution time        |
+
+Tip 1: If you intend to run the solver multiple times on the same sudoku (e.g. get the average execution time, or try with/without animation), then you might want to write your input to a text file, and then use the `<` shell redirection operator to have your input taken from the file. For example, if you write your input (as a one-line string) to `test.txt`, then you can run
+~~~
+$ ./sudokusolver < test.txt
+~~~
+
+Tip 2: If you want to play around, [this website] can generate sudoku puzzles, and you can pick the output format to be "One line".
+
+Note: A proper Sudoku puzzle has only one solution. Sudoku Solver will NOT look for multiple solutions, so it cannot tell a proper, one-solution Sudoku from an improper one.
 
 ## Build ##
 
@@ -44,4 +61,5 @@ The list of additional sources which were used as references:
 - https://github.com/KarlHajal/DLX-Sudoku-Solver
 
 [sudoku]: https://en.wikipedia.org/wiki/Sudoku
+[this website]: https://qqwing.com/generate.html
 [here]: https://www.ocf.berkeley.edu/~jchu/publicportal/sudoku/0011047.pdf
