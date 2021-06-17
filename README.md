@@ -3,6 +3,7 @@
 This is a [sudoku] solving command line program, written in C++. The Sudoku Solver uses Algorithm X, in combination with the Dancing Links implementation, to efficiently solve 9x9 sudokus.
 
 After running `./sudokusolver` from the terminal, the program will wait for input. The sudoku board should be input as a string of length 81, with dots in places of empty cells. The input is perhaps best explained through an example:
+~~~
 +-------+-------+-------+
 | . . . | 2 4 . | . 1 . |
 | 7 . . | . . . | 8 . . |
@@ -16,8 +17,9 @@ After running `./sudokusolver` from the terminal, the program will wait for inpu
 | 8 . . | 7 . 2 | 9 . . |
 | . 6 . | . . . | . . . |
 +-------+-------+-------+
+~~~
 should be input as 
-...24..1.7.....8...1..8.3....83.....3..6247.9.......6.....3..428..7.29...6.......
+`...24..1.7.....8...1..8.3....83.....3..6247.9.......6.....3..428..7.29...6.......`.
 
 The 
 
