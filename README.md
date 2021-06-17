@@ -38,11 +38,13 @@ $ ./sudokusolver < test.txt
 
 Tip 2: If you want to play around, [this website] can generate sudoku puzzles, and you can pick the output format to be "One line".
 
-Note: A proper Sudoku puzzle has only one solution. Sudoku Solver will NOT look for multiple solutions, so it cannot tell a proper, one-solution Sudoku from an improper one.
+Note 1: A proper Sudoku puzzle has only one solution. Sudoku Solver will NOT look for multiple solutions, so it cannot tell a proper, one-solution Sudoku from an improper one.
+
+Note 2: The source code heavily relies on Algorithm X and Dancing Links. You should really try to understand how these work before reading the source code. Check out **References** below.
 
 ## Build ##
 
-The default compiler is `GCC`. You can also use `clang`, in which case you need to replace the first line in `makefile`, which is currently `CC=g++`, with `CC=clang++`. Regardless of which compiler you use, it needs to support at least `C++11`. Sudoku Solver is written using standard C++, so it should, in principle, be able to run on any platform, although it has only been tested on Linux.
+To build Sudoku Solver, you will need a C++ compiler and the `make` utility. The default compiler is `GCC`. You can also use `clang`, in which case you need to replace the first line in `makefile`, which is currently `CC=g++`, with `CC=clang++`. Regardless of which compiler you use, it needs to support at least `C++11`. Sudoku Solver is written using standard C++, so it should, in principle, be able to run on any platform, although it has only been tested on Linux.
 
 Download the files from this repository and open the terminal in the main directory. Type `make` and hit enter. If everything goes okay, you should see the message `Build successful!` displayed on the screen. Then, you can run the program from the terminal.
 
