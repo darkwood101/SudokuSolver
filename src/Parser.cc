@@ -8,14 +8,7 @@
 /**
  * Parses the command line arguments.
  * Sets the corresponding member variables to true/false.
- * 
- * @param `argc`      The number of command line arguments
- * @param `argv`      The array of arguments
- * 
- * @return            void
- * 
- * @throw             Throws `std::invalid_argument` if unknown argument
- *                    was supplied
+ * Throws `std::invalid_argument` if unknown argument was supplied.
  **/
 void Parser::parse(int argc, char **argv) {
     for (int i = 1; i < argc; ++i) {
@@ -35,12 +28,6 @@ void Parser::parse(int argc, char **argv) {
 
 /**
  * Prints the usage/help message.
- * 
- * @param `prog_name`      The program name to be printed
- * 
- * @return                 void
- * 
- * @throw                  no
  **/
 void Parser::usage(const char* prog_name) {
     fprintf(stderr, "Usage: %s [OPTIONS]\n", prog_name);
@@ -58,12 +45,6 @@ void Parser::usage(const char* prog_name) {
 
 /**
  * Clears the screen by printing newline a lot of times.
- * 
- * @param      void
- * 
- * @return     void
- * 
- * @throw      no
  **/
 void Parser::clear() {
     for (int i = 0; i < 100; ++i) {

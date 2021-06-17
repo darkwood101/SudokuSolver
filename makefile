@@ -13,6 +13,8 @@ DEP_DIR=.deps
 DEPFLAGS= -MMD -MF $(DEP_DIR)/$*.d -MP
 DEP=$(OBJ:$(OBJ_DIR)/%.o=$(DEP_DIR)/%.d)
 
+INC=-Isrc/include
+
 all: $(TARGET)
 
 $(TARGET): $(OBJ)
@@ -23,7 +25,7 @@ $(TARGET): $(OBJ)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc | $(OBJ_DIR) $(DEP_DIR)
 	@echo COMPILING: $@
-	@$(CC) $(CFLAGS) $(DEPFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) $(DEPFLAGS) $(INC) -c $< -o $@
 
 $(OBJ_DIR):
 	@mkdir -p $@

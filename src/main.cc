@@ -72,11 +72,6 @@ int main(int argc, char** argv) {
         printf("The sudoku has no solution\n");
     }
 
-    // Warn if there are multiple solutions
-    if (s.multiple_) {
-        printf("Warning: The sudoku has multiple solutions\n");
-    }
-
     // Print timing result
     if (parser.time_) {
         printf("Time taken: %.2f milliseconds\n", parser.end_timing() / 1000.00);

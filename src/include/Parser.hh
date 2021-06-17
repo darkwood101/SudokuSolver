@@ -1,6 +1,6 @@
 /** Parser.hh 
  * 
- * This header file contains the declaration of the Parser struct,
+ * This header file contains the declaration of the `Parser` struct,
  * which is used to parse the command line input, as well as for some general
  * helper functions.
  **/
@@ -37,26 +37,14 @@ inline Parser::Parser() : help_(false),
 
 /** 
  * Records the timestamp in the `start_` variable
- * 
- * @param       void
- * 
- * @return      void
- * 
- * @throw       no
  **/
 inline void Parser::start_timing() {
     start_ = std::chrono::high_resolution_clock::now();
 }
 
 /**
- * Measures the time since `start_`.
- *
- * @param       void
- * 
- * @return      Returns the number of microseconds that elapsed since
- *              `start_`.
- * 
- * @throw       no
+ * Measures the time since `start_` and returns the number
+ * of elapsed microseconds as a double.
  **/
 inline double Parser::end_timing() {
     std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
