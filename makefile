@@ -1,48 +1,52 @@
-CC=g++
+# Compiler flags, compile command
+CXX := g++
+CXXFLAGS := -W -Wextra -Wall -Wshadow -O2 -std=c++17
+cxxcompile = @echo " " $(2) && $(CXX) $(CXXFLAGS) $(DEPCXXFLAGS) $(INC) $(1)
 
-TARGET=sudokusolver
-
-SRC_DIR=src
-SRC=$(wildcard $(SRC_DIR)/*.cc)
-CFLAGS= -O2 -Wextra -Wall -Wshadow
-
-OBJ_DIR=obj
-OBJ=$(SRC:$(SRC_DIR)/%.cc=$(OBJ_DIR)/%.o)
-
-DEP_DIR=.deps
-DEPFLAGS= -MMD -MF $(DEP_DIR)/$*.d -MP
-DEP=$(OBJ:$(OBJ_DIR)/%.o=$(DEP_DIR)/%.d)
-
-INC=-Isrc/include
-
+# Build target
+TARGET := sudokusolver
 all: $(TARGET)
 
-$(TARGET): $(OBJ)
-	@echo LINKING: $(TARGET)
-	@$(CC) -o $@ $^
-	@echo
-	@echo Build successful!
+# Generic run command
+run = @$(if $(2), echo " " $(2) $(3) &&,) $(1) $(3)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc | $(OBJ_DIR) $(DEP_DIR)
-	@echo COMPILING: $@
-	@$(CC) $(CFLAGS) $(DEPFLAGS) $(INC) -c $< -o $@
+# Dependencies
+DEPSDIR := .deps
+DEPFILES := $(wildcard $(DEPSDIR)/*.d)
+include $(DEPFILES)
+DEPCXXFLAGS = -MD -MF $(DEPSDIR)/$(@F).d -MP
 
-$(OBJ_DIR):
-	@mkdir -p $@
+# Header files
+INC := -Iinclude
 
-$(DEP_DIR):
-	@mkdir -p $@
+# Source files
+SRCDIR := src
+SRCFILES := $(wildcard $(SRCDIR)/*.cc)
 
+# Object files
+OBJDIR := obj
+OBJFILES := $(patsubst $(SRCDIR)/%.cc, $(OBJDIR)/%.o, $(SRCFILES))
+
+# Create directories if they don't exist
+$(OBJFILES): | $(OBJDIR) $(DEPSDIR)
+
+$(OBJDIR):
+	$(call run, mkdir -p $@, CREATE $@/)
+
+$(DEPSDIR):
+	$(call run, mkdir -p $@, CREATE $@/)
+
+# How to make object files
+$(OBJDIR)/%.o: $(SRCDIR)/%.cc
+	$(call cxxcompile, -o $@ -c $<, COMPILE $<)
+
+# How to make the executable
+$(TARGET): $(OBJFILES)
+	$(call cxxcompile, -o $@ $^, LINK)
+	$(call run, true, "Build successful!")
+
+# Remove dependencies, object files, and the executable
 clean:
-	@echo CLEANING: dependency files
-	@$(RM) -r $(DEP_DIR)
-	@echo CLEANING: object files
-	@$(RM) -r $(OBJ_DIR)
-	@echo CLEANING: executable files
-	@$(RM) $(TARGET)
-	@echo
-	@echo Clean successful!
+	$(call run, rm -rf $(OBJDIR) $(DEPSDIR) $(TARGET), CLEAN)
 
 .PHONY: all clean
-
--include $(DEP)

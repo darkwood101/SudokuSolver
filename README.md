@@ -1,6 +1,6 @@
 # Sudoku Solver #
 
-This is a [sudoku] solving command line program, written in C++. The Sudoku Solver uses Algorithm X, in combination with the Dancing Links implementation, to efficiently solve 9x9 sudokus.
+This is a [sudoku] solving command line program, written in C++. Sudoku Solver uses Algorithm X, in combination with the Dancing Links implementation, to efficiently solve 9x9 sudokus.
 
 After running `./sudokusolver` from the terminal, the program will wait for input. The sudoku board should be input as a string of length 81, with dots in places of empty cells. The input is perhaps best explained through an example:
 ~~~
@@ -44,7 +44,7 @@ Note 2: The source code heavily relies on Algorithm X and Dancing Links. You sho
 
 ## Build ##
 
-To build Sudoku Solver, you will need a C++ compiler and the `make` utility. The default compiler is `GCC`. You can also use `clang`, in which case you need to replace the first line in `makefile`, which is currently `CC=g++`, with `CC=clang++`. Regardless of which compiler you use, it needs to support at least `C++11`. Sudoku Solver is written using standard C++, so it should, in principle, be able to run on any platform, although it has only been tested on Linux.
+To build Sudoku Solver, you will need a C++ compiler and the `make` utility. The default compiler is `GCC`. You can also use `clang`, in which case you need to replace the first line in `makefile`, which is currently `CXX := g++`, with `CXX := clang++`. Sudoku Solver is written using standard C++, so it should, in principle, be able to run on any platform, although it has only been tested on Linux.
 
 Download the files from this repository and open the terminal in the main directory. Type `make` and hit enter. If everything goes okay, you should see the message `Build successful!` displayed on the screen. Then, you can run the program from the terminal.
 

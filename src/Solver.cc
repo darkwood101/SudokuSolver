@@ -82,8 +82,8 @@ void Solver::init_columns() {
         cols_[i].right_ = &cols_[(i + 1) % num_cols];
 
         // If the first column, point to the last one, otherwise just
-        // to the left
-        // We can't use the same syntac as above because the behavior of
+        // to the lefts
+        // We can't use the same syntax as above because the behavior of
         // mod of negative numbers is not guaranteed by the standard
         cols_[i].left_ = (i == 0) ? &cols_[num_cols - 1] : &cols_[i - 1];
 
